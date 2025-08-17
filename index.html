@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Find Your Reader Type</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0b14;
+      /* deep inky backdrop */
+      --card: #181422;
+      /* card shell */
+      --ink: #e7e3f1;
+      /* primary text */
+      --muted: #bfb7d6;
+      /* secondary text */
+      --brand: #a889ff;
+      /* accent */
+      --brand-2: #6ed6ff;
+      /* accent 2 */
+      --success: #35d49c;
+      --danger: #ff6b6b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(168, 137, 255, .20), transparent 60%),
+        radial-gradient(1000px 500px at 110% 10%, rgba(110, 214, 255, .18), transparent 60%),
+        linear-gradient(180deg, #0c0a12 0%, #0e0b14 70%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      text-align: center;
+      margin-bottom: 24px
+    }
+
+    .logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow)
+    }
+
+    .logo svg {
+      filter: drop-shadow(0 4px 14px rgba(168, 137, 255, .45))
+    }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      letter-spacing: .3px;
+      margin: 0
+    }
+
+    p.lead {
+      color: var(--muted);
+      margin: .25rem 0 0
+    }
+
+    .card {
+      background: rgba(24, 20, 34, .8);
+      backdrop-filter: saturate(140%) blur(6px);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin: 16px 0
+    }
+
+    .hidden {
+      display: none
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 6px 0 8px
+    }
+
+    input[type=email] {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: #120e1b;
+      color: var(--ink);
+      outline: none;
+      transition: border .2s, box-shadow .2s
+    }
+
+    input[type=email]:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 4px rgba(168, 137, 255, .15)
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: .2px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      color: #0b0912;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      box-shadow: 0 10px 18px rgba(168, 137, 255, .22), inset 0 -2px 0 rgba(0, 0, 0, .1);
+      transition: transform .04s ease, filter .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .btn:active {
+      transform: translateY(1px)
+    }
+
+    .btn.secondary {
+      background: #201a2c;
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08)
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0 16px
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(168, 137, 255, .14);
+      color: #d9d0ff;
+      font-weight: 600;
+      font-size: .9rem
+    }
+
+    .question {
+      margin: 18px 0 10px;
+      font-weight: 700
+    }
+
+    .options {
+      display: grid;
+      gap: 10px
+    }
+
+    .option {
+      background: #120e1b;
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      transition: border .2s, transform .05s
+    }
+
+    .option:hover {
+      border-color: rgba(168, 137, 255, .35)
+    }
+
+    .option input {
+      margin-top: 3px
+    }
+
+    .progress {
+      height: 8px;
+      background: #120e1b;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .08)
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      transition: width .3s
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .9rem
+    }
+
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(53, 212, 156, .12);
+      color: var(--success);
+      font-weight: 700
+    }
+
+    .result-desc {
+      color: var(--muted)
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px
+    }
+
+    @media (min-width:720px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    .fade-in {
+      animation: fade .4s ease both
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .12), transparent);
+      margin: 18px 0
+    }
+
+    .mini {
+      font-size: .86rem;
+      color: var(--muted)
+    }
+
+    a.link {
+      color: #c6b7ff;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(198, 183, 255, .6)
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <!-- Open book icon -->
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
+          <path d="M12 6c-2.2-1.7-6-1.7-8 0v11c2-1.7 5.8-1.7 8 0m0-11c2.2-1.7 6-1.7 8 0v11c-2-1.7-5.8-1.7-8 0"
+            stroke="#0b0912" stroke-width="1.6" fill="white" />
+        </svg>
+      </div>
+      <div>
+        <h1>Find Your Reader Type</h1>
+        <p class="lead">A short, aesthetic quiz to discover your reading personality.</p>
+      </div>
+    </header>
+
+    <!-- STEP 1: EMAIL GATE -->
+    <section id="emailGate" class="card fade-in" aria-label="Email signup">
+      <div class="header-row">
+        <span class="pill">Step 1 of 2 · Required</span>
+      </div>
+      <label for="email">Enter your email to begin</label>
+      <div class="grid-2">
+        <input id="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+        <button id="startBtn" class="btn" aria-label="Start quiz">Start Quiz</button>
+      </div>
+      <div id="emailError" class="mini" role="alert" style="color:var(--danger); margin-top:8px; display:none"></div>
+      <div class="divider"></div>
+      <p class="footer-note mini">Your email is used to keep your result or follow up (no spam). You can opt out
+        anytime.</p>
+    </section>
+
+    <!-- STEP 2: QUIZ -->
+    <section id="quiz" class="card hidden" aria-label="Reader type quiz">
+      <div class="header-row">
+        <span class="pill">Step 2 of 2</span>
+        <div style="flex:1"></div>
+        <div class="progress" aria-hidden="true">
+          <div id="bar" class="bar"></div>
+        </div>
+      </div>
+
+      <form id="quizForm">
+        <!-- Questions injected by JS -->
+        <div id="questions"></div>
+
+        <div class="divider"></div>
+        <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap">
+          <button type="button" class="btn secondary" id="resetBtn">Reset</button>
+          <button type="submit" class="btn">See My Type</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- RESULT -->
+    <section id="result" class="card hidden" aria-live="polite">
+      <div class="header-row">
+        <span class="pill">Your Result</span>
+        <div style="flex:1"></div>
+      </div>
+      <div id="resultBadge" class="result-badge" style="margin-bottom:10px"></div>
+      <p id="resultDesc" class="result-desc"></p>
+      <div class="divider"></div>
+      <div class="grid-2">
+        <button class="btn" id="shareBtn" type="button">Copy Shareable Summary</button>
+        <button class="btn secondary" id="againBtn" type="button">Retake Quiz</button>
+      </div>
+      <p class="mini" style="margin-top:12px" id="savedNote"></p>
+    </section>
+
+    <footer style="text-align:center; margin-top:28px" class="mini">
+      Made with ♥ for book lovers · <span id="year"></span>
+    </footer>
+  </div>
+
+  <script>
+    const emailGate = document.getElementById('emailGate');
+    const emailInput = document.getElementById('email');
+    const startBtn = document.getElementById('startBtn');
+    const emailError = document.getElementById('emailError');
+
+    const quizSection = document.getElementById('quiz');
+    const questionsEl = document.getElementById('questions');
+    const quizForm = document.getElementById('quizForm');
+    const bar = document.getElementById('bar');
+
+    const resultSection = document.getElementById('result');
+    const resultBadge = document.getElementById('resultBadge');
+    const resultDesc = document.getElementById('resultDesc');
+    const shareBtn = document.getElementById('shareBtn');
+    const againBtn = document.getElementById('againBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const savedNote = document.getElementById('savedNote');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Quiz data
+    const QUIZ = [
+      {
+        q: "When you pick up a book, what’s your main purpose?",
+        a: [
+          {text: "To escape into stories and emotions", type: "Fiction Lover"},
+          {text: "To gain new knowledge and skills", type: "Knowledge Seeker"},
+          {text: "To enjoy the beauty of words and writing", type: "Literary Reader"},
+          {text: "To relax and pass the time", type: "Casual Reader"}
+        ]
+      },
+      {
+        q: "How do you usually choose the next book you’ll read?",
+        a: [
+          {text: "Recommendations from friends or social media", type: "Fiction Lover"},
+          {text: "Based on the author’s reputation or awards", type: "Literary Reader"},
+          {text: "By exploring topics I want to learn more about", type: "Knowledge Seeker"},
+          {text: "Randomly, whatever catches my eye", type: "Casual Reader"}
+        ]
+      },
+      {
+        q: "What kind of books do you finish fastest?",
+        a: [
+          {text: "Thrillers, romance, or fantasy (Page‑turners)", type: "Fiction Lover"},
+          {text: "Self‑help, biographies, or business books", type: "Knowledge Seeker"},
+          {text: "Classics or deep philosophical books", type: "Literary Reader"},
+          {text: "Short stories, comics, or light reads", type: "Casual Reader"}
+        ]
+      },
+      {
+        q: "How do you usually react after finishing a book?",
+        a: [
+          {text: "I feel emotionally attached to characters", type: "Fiction Lover"},
+          {text: "I apply the lessons or insights in real life", type: "Knowledge Seeker"},
+          {text: "I reflect and discuss deeper meanings", type: "Literary Reader"},
+          {text: "I move on quickly to the next one", type: "Casual Reader"}
+        ]
+      },
+      {
+        q: "If you had a free Sunday, how would you read?",
+        a: [
+          {text: "Curl up with a novel and read for hours", type: "Fiction Lover"},
+          {text: "Read a few chapters of a book that improves me", type: "Knowledge Seeker"},
+          {text: "Take notes while reading something complex", type: "Literary Reader"},
+          {text: "Skim light books or audiobooks while relaxing", type: "Casual Reader"}
+        ]
+      }
+    ];
+
+    const TYPE_COPY = {
+      "Fiction Lover": {
+        emoji: "📖",
+        desc: "You crave immersive stories, rich characters, and emotional arcs. Narrative worlds fuel your imagination—and your TBR never ends."
+      },
+      "Knowledge Seeker": {
+        emoji: "🧠",
+        desc: "You read to grow. You love actionable ideas, biographies, and big concepts you can apply to life and work."
+      },
+      "Literary Reader": {
+        emoji: "🖋️",
+        desc: "You savor craftsmanship—language, structure, and themes. You enjoy classics, modern lit, and thoughtful critique."
+      },
+      "Casual Reader": {
+        emoji: "🌙",
+        desc: "You read for calm and comfort. Short, engaging, low‑stakes reads fit your rhythm—and that’s a beautiful habit."
+      }
+    };
+
+    // Utilities
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    function validateEmail(v) {return emailRegex.test(String(v).trim());}
+
+    function setProgress() {
+      const answered = document.querySelectorAll('input[type=radio]:checked').length;
+      const pct = Math.round((answered / QUIZ.length) * 100);
+      bar.style.width = pct + '%';
+    }
+
+    function renderQuiz() {
+      const frag = document.createDocumentFragment();
+      QUIZ.forEach((item, idx) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'fade-in';
+        wrap.innerHTML = `
+          <div class="question">${idx + 1}. ${item.q}</div>
+          <div class="options">
+            ${item.a.map((opt, i) => `
+              <label class="option">
+                <input type="radio" name="q${idx}" value="${opt.type}" aria-label="${opt.text}">
+                <span>${opt.text}</span>
+              </label>
+            `).join('')}
+          </div>
+        `;
+        frag.appendChild(wrap);
+      });
+      questionsEl.appendChild(frag);
+      questionsEl.addEventListener('change', setProgress);
+    }
+
+    function tally(formData) {
+      const scores = {"Fiction Lover": 0, "Knowledge Seeker": 0, "Literary Reader": 0, "Casual Reader": 0};
+      for (let i = 0; i < QUIZ.length; i++) {
+        const v = formData.get('q' + i);
+        if (v && scores[v] !== undefined) scores[v]++;
+      }
+      // pick the highest; tie-breaker: prefer the first encountered in this order
+      const order = ["Fiction Lover", "Knowledge Seeker", "Literary Reader", "Casual Reader"];
+      let best = order[0], bestVal = -1;
+      for (const t of order) {
+        if (scores[t] > bestVal) {best = t; bestVal = scores[t];}
+      }
+      return {type: best, scores};
+    }
+
+    function showResult(email, result) {
+      const info = TYPE_COPY[result.type];
+      resultSection.classList.remove('hidden');
+      resultBadge.textContent = `${info.emoji} ${result.type}`;
+      resultDesc.textContent = info.desc;
+      savedNote.textContent = `Saved for ${email}.`;
+      // smooth scroll
+      resultSection.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+
+    // Handlers
+    startBtn.addEventListener('click', () => {
+      const v = emailInput.value;
+      if (!validateEmail(v)) {
+        emailError.textContent = 'Please enter a valid email address to continue.';
+        emailError.style.display = 'block';
+        emailInput.focus();
+        return;
+      }
+      emailError.style.display = 'none';
+      // move to quiz
+      emailGate.classList.add('hidden');
+      quizSection.classList.remove('hidden');
+      setProgress();
+
+      window.localStorage.setItem('readerQuizEmail', v.trim());
+
+    });
+
+    resetBtn.addEventListener('click', () => {
+      document.querySelectorAll('input[type=radio]:checked').forEach(el => el.checked = false);
+      setProgress();
+    });
+
+    quizForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Ensure all answered
+      for (let i = 0; i < QUIZ.length; i++) {
+        if (!quizForm.querySelector(`input[name="q${i}"]:checked`)) {
+          alert(`Please answer question ${i + 1} before submitting.`);
+          return;
+        }
+      }
+      const formData = new FormData(quizForm);
+      const res = tally(formData);
+      const email = window.localStorage.getItem('readerQuizEmail') || emailInput.value.trim();
+      quizSection.classList.add('hidden');
+      showResult(email, res);
+      // Save result in localStorage for convenience
+      window.localStorage.setItem('readerQuizResult', JSON.stringify(res));
+
+      fetch("https://script.google.com/macros/s/AKfycbzl9UGa9723jnF7qA3wzipsmPqdD2Pk5rQ9N8HAYDIaGnsYLc3B4HjC3aoJWr0b0knmtA/exec", {
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+          type: res.type
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(r => r.json())
+        .then(data => {
+          console.log("Saved to Google Sheets:", data);
+        })
+        .catch(err => {
+          console.error("Error saving to Google Sheets:", err);
+        });
+    });
+
+    againBtn.addEventListener('click', () => {
+      // reset
+      resultSection.classList.add('hidden');
+      quizSection.classList.remove('hidden');
+      document.querySelectorAll('input[type=radio]:checked').forEach(el => el.checked = false);
+      setProgress();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+
+    shareBtn.addEventListener('click', async () => {
+      const email = window.localStorage.getItem('readerQuizEmail') || 'your email';
+      const res = JSON.parse(window.localStorage.getItem('readerQuizResult') || '{}');
+      const text = `Reader Type Result\nEmail: ${email}\nType: ${res.type}\n`;
+      try {
+        await navigator.clipboard.writeText(text);
+        shareBtn.textContent = 'Copied!';
+        setTimeout(() => shareBtn.textContent = 'Copy Shareable Summary', 1800);
+      } catch (err) {
+        alert('Copied text failed. You can copy manually:\n\n' + text);
+      }
+    });
+
+    // Init
+    renderQuiz();
+
+    // If the user previously started
+    const savedEmail = window.localStorage.getItem('readerQuizEmail');
+    if (savedEmail) {emailInput.value = savedEmail;}
+  </script>
+</body>
+
+</html>
