@@ -555,10 +555,7 @@
         body: JSON.stringify({
           email: email,
           type: res.type
-        }),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        })
       })
         .then(r => r.json())
         .then(data => {
